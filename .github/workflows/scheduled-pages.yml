@@ -1,0 +1,40 @@
+name: Scheduled GitHub Pages Build
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"   # runs every 6 hours
+  workflow_dispatch:        # allows manual trigger
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Setup Python from .python-version
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: .python-version
+
+      # 3. Install uv (Python environment manager)
+      - name: Install uv
+        run: pip install uv
+
+      # 4. Install dependencies from uv.lock
+      - name: Install dependencies
+        run: uv install
+
+      # 5. Run your Python script to generate HTML
+      - name: Run Python data pipeline
+        run: python inline_kf_script.py
+
+      # 6. Deploy generated HTML to GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: price-hound/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./output
