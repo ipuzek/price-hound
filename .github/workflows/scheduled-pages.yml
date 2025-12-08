@@ -30,7 +30,7 @@ jobs:
 
       # 5. Run your Python script to generate HTML
       - name: Run Python data pipeline
-        run: python inline_kf_script.py
+        run: uv run python inline_kf_script.py
 
       # 6. Deploy generated HTML to GitHub Pages
       - name: Deploy to GitHub Pages
