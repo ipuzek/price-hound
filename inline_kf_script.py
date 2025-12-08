@@ -286,7 +286,7 @@ def style_dataframe(df: pd.DataFrame,
     
     return styled
 
-def highlight_rows_by_value(row, target_value=1, target_column="is_akcija", highlight_color="CornSilk"):
+def highlight_rows_by_value(row, target_value=0, target_column="is_akcija", highlight_color="CornSilk"):
     """Function to highlight entire row if 'value' == target_value"""
     if row[target_column] == target_value:
         return [f"background-color: {highlight_color}" for _ in row]
