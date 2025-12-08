@@ -188,32 +188,32 @@ def tidy(df):
 
 def FILT_FAVORITES(df):
         FILT_FAVORITES = (
-                df.product_name.str.contains("PILSNER U") & df.product_name.str.contains("PB|4X") |  # obuhvaća staklenu bocu i 4xlimenke
-                df.product_name.str.contains("GARDEN") & df.product_name.str.contains("%") |
-                df.product_name.str.contains("ARBORIO|CARNAROLI|ORIGINARIO") & df.brand.str.contains("Riso Scotti") |
-                df.product_name.str.contains("TOFU") |
-                df.product_name.str.contains("TJESTENINA") & df.brand.str.startswith("K-Fav") |
-                df.product_name.str.contains("KFAV.FARFALLE|KFAV.LINGUINE") |
-                df.product_name.str.contains("MOLISANA") |
-                df.product_name.str.startswith("KVEG") & df.product_name.str.contains("NAPITAK ZOB") |
-                df.product_name.str.contains("PROSENA KAŠA") |
-                df.product_name.str.contains("KAVA") & df.product_name.str.contains("ZRN") & df.product_name.str.contains("BRAS") |
-                df.product_name.str.contains("OCTENA ESENCIJA") |
-                df.product_name.str.contains("INDOMIE") & df.product_name.str.contains("POVRĆE") |
-                df.product_name.str.contains("HUMUS|HUMMUS") & (df.quantity > .15) |
-                df.product_name.str.contains("RICE UP") |
-                df.product_name.str.contains("KLC.LEĆA") |
-                df.product_name.str.contains("TORTERIE") |
-                df.product_name.str.contains("BARATTOLINO") |
-                df.product_name.str.contains("MASLAC") & df.product_name.str.contains("DUKAT|BREGOV") & (df.quantity > .2) |
-                df.product_name.str.contains("KLC.BIO PAP.VREĆA ZA SMEĆE") |
-                df.product_name.str.contains("KLC.DETERDŽENT ZA PRA. POSU.U PRAHU") |
-                df.product_name.str.contains("KH-7") |
-                df.product_name.str.contains("VEDRINI") |
-                df.product_name.str.contains("KFAV.ČOKOLADA TAMNA") |
-                df.product_name.str.contains("ECOVER") & df.product_name.str.contains("UNI") |
-                df.product_name.str.contains("YOGI ČAJ CLASSIC") |
-                df.product_name.str.contains("TORTILL") & df.brand.str.contains("K-") |
+                # df.product_name.str.contains("PILSNER U") & df.product_name.str.contains("PB|4X") |  # obuhvaća staklenu bocu i 4xlimenke
+                # df.product_name.str.contains("GARDEN") & df.product_name.str.contains("%") |
+                # df.product_name.str.contains("ARBORIO|CARNAROLI|ORIGINARIO") & df.brand.str.contains("Riso Scotti") |
+                # df.product_name.str.contains("TOFU") |
+                # df.product_name.str.contains("TJESTENINA") & df.brand.str.startswith("K-Fav") |
+                # df.product_name.str.contains("KFAV.FARFALLE|KFAV.LINGUINE") |
+                # df.product_name.str.contains("MOLISANA") |
+                # df.product_name.str.startswith("KVEG") & df.product_name.str.contains("NAPITAK ZOB") |
+                # df.product_name.str.contains("PROSENA KAŠA") |
+                # df.product_name.str.contains("KAVA") & df.product_name.str.contains("ZRN") & df.product_name.str.contains("BRAS") |
+                # df.product_name.str.contains("OCTENA ESENCIJA") |
+                # df.product_name.str.contains("INDOMIE") & df.product_name.str.contains("POVRĆE") |
+                # df.product_name.str.contains("HUMUS|HUMMUS") & (df.quantity > .15) |
+                # df.product_name.str.contains("RICE UP") |
+                # df.product_name.str.contains("KLC.LEĆA") |
+                # df.product_name.str.contains("TORTERIE") |
+                # df.product_name.str.contains("BARATTOLINO") |
+                # df.product_name.str.contains("MASLAC") & df.product_name.str.contains("DUKAT|BREGOV") & (df.quantity > .2) |
+                # df.product_name.str.contains("KLC.BIO PAP.VREĆA ZA SMEĆE") |
+                # df.product_name.str.contains("KLC.DETERDŽENT ZA PRA. POSU.U PRAHU") |
+                # df.product_name.str.contains("KH-7") |
+                # df.product_name.str.contains("VEDRINI") |
+                # df.product_name.str.contains("KFAV.ČOKOLADA TAMNA") |
+                # df.product_name.str.contains("ECOVER") & df.product_name.str.contains("UNI") |
+                # df.product_name.str.contains("YOGI ČAJ CLASSIC") |
+                # df.product_name.str.contains("TORTILL") & df.brand.str.contains("K-") |
                 df.product_name.str.contains("TORTILL") & df.brand.str.contains("Fiesta")
                 )
         return FILT_FAVORITES
