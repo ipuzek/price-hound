@@ -324,4 +324,4 @@ if __name__ == "__main__":
             lambda row: highlight_rows_by_value(row, highlight_color="LightBlue"),
             axis=1)
 
-    styled.to_html(Path("output", "kf__akcija.html"))
+    styled.to_html(Path("output", "index.html"))
