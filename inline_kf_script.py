@@ -1,5 +1,5 @@
 import sys
-print(sys.version_info)
+# print(sys.version_info)
 from pathlib import Path
 import requests
 import re
@@ -214,7 +214,8 @@ def FILT_FAVORITES(df):
                 df.product_name.str.contains("ECOVER") & df.product_name.str.contains("UNI") |
                 df.product_name.str.contains("YOGI ČAJ CLASSIC") |
                 df.product_name.str.contains("TORTILL") & df.brand.str.contains("K-") |
-                df.product_name.str.contains("TORTILL") & df.brand.str.contains("Fiesta")
+                df.product_name.str.contains("TORTILL") & df.brand.str.contains("Fiesta") |
+                df.product_name.str.contains("panettone", case=False) & df.quantity >= 0.5
                 )
         return FILT_FAVORITES
 
