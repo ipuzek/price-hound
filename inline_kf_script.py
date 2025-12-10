@@ -170,10 +170,10 @@ def tidy(df):
                 .str.removesuffix("€ur")
                 .map(replace_with_dot_if_number))
         
-        df["best_price_30"] = pd.to_numeric(
-                df["best_price_30"]
-                .str.removeprefix("*")
-                .map(replace_with_dot_if_number))
+        # df["best_price_30"] = pd.to_numeric(
+        #         df["best_price_30"]
+        #         # .str.removeprefix("*")
+        #         .map(replace_with_dot_if_number))
 
         df = df.assign(
                 product_name = df["product_name"].str.upper(),
@@ -303,7 +303,6 @@ if __name__ == "__main__":
     url_filtered = df_url[(df_url["date"] == TODAY) & (df_url["store_id"] == KF_ZD.id)].url.squeeze()
     df_in = read_csv_kf(url_filtered)
     df = tidy(df_in)
-    
     dff = df[(FILT_WEIZEN(df) | FILT_FAVORITES(df) | FILT_SIR(df))]
     
     dff_favs_razlika = (dff
