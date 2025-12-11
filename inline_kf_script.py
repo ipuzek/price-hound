@@ -215,7 +215,9 @@ def FILT_FAVORITES(df):
                 df.product_name.str.contains("YOGI ČAJ CLASSIC") |
                 df.product_name.str.contains("TORTILL") & df.brand.str.contains("K-") |
                 df.product_name.str.contains("TORTILL") & df.brand.str.contains("Fiesta") |
-                df.product_name.str.contains("panettone", case=False) & df.quantity >= 0.5
+                df.product_name.str.contains("PANETTONE") & df.quantity >= 0.5 |
+                df.product_name.str.contains("ELEPHANT SLANO PECIVO SEZAM") & (df.quantity > .15) |
+                df.product_name.str.contains("ELEPHANT KREKERI TWIST KARAMEL") & (df.quantity > .15)
                 )
         return FILT_FAVORITES
 
