@@ -157,6 +157,12 @@ def prepare_anchor(s: str):
 def tidy(df):
 
         df = df.rename(columns=PRICE_MAP | FIELD_MAP)
+        
+        df["best_price_30"] = (
+            df["best_price_30"]
+            .str.replace(r"[^\d\.\-]", "", regex=True)
+            .pipe(pd.to_numeric, errors="coerce")
+        )
 
         df[["date_to_parse", "price_to_parse"]] = df.anchor_price_date.apply(prepare_anchor)
 
