@@ -1,5 +1,3 @@
-import sys
-# print(sys.version_info)
 from pathlib import Path
 import requests
 import re
@@ -117,15 +115,16 @@ def read_csv_kf(filename):
     use tab separator and comma decimal
     enconding: try utf-8, fall back to win-1250
     """
-    import pandas as pd    
     try:
         # Try UTF-8 first
-        df = pd.read_csv(filename, delimiter="\t", decimal=",", encoding="utf-8")
+        df = pd.read_csv(filename, delimiter="\t", decimal=",", encoding="utf-8",
+                         dtype={"Najniža MPC u 30dana": str})
         print(f"UTF-8   : {filename}")
         return df
     except UnicodeDecodeError:
         try:
-            df = pd.read_csv(filename, delimiter="\t", decimal=",", encoding="windows-1250")
+            df = pd.read_csv(filename, delimiter="\t", decimal=",", encoding="windows-1250",
+                             dtype={"Najniža MPC u 30dana": str})
             print(f"WIN-1250: {filename}")
             return df
         except Exception as e:
@@ -155,12 +154,10 @@ def prepare_anchor(s: str):
     return pd.Series([date.strip(), price.strip()])
 
 def tidy(df):
-
-        df = df.rename(columns=PRICE_MAP | FIELD_MAP)
         
         df["best_price_30"] = (
             df["best_price_30"]
-            .str.replace(r"[^\d\.\-]", "", regex=True)
+            .str.replace(r"[^\d\.\,\-]", "", regex=True) # sanitize numbers, allow comma and dot
             .pipe(pd.to_numeric, errors="coerce")
         )
 
@@ -310,6 +307,9 @@ if __name__ == "__main__":
     df_url = fetch_stores_dates()
     url_filtered = df_url[(df_url["date"] == TODAY) & (df_url["store_id"] == KF_ZD.id)].url.squeeze()
     df_in = read_csv_kf(url_filtered)
+    df_in = df_in.rename(columns=PRICE_MAP | FIELD_MAP)
+    df_in.columns
+    df_in.dtypes
     df = tidy(df_in)
     dff = df[(FILT_WEIZEN(df) | FILT_FAVORITES(df) | FILT_SIR(df))]
     
