@@ -233,7 +233,7 @@ def FILT_WEIZEN(df):
 
 def FILT_SIR(df):
         FILT_SIR = (
-                (df.product_name.str.contains("halloumi|parm|pecorino|padano", case=False)) & (df.quantity >= .2))
+                (df.product_name.str.contains("halloumi|parmi|pecorino|padano", case=False)) & (df.quantity >= .2))
         return FILT_SIR
 
 def style_dataframe(df: pd.DataFrame,
