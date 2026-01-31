@@ -194,7 +194,7 @@ def tidy(df):
 
 def FILT_FAVORITES(df):
         FILT_FAVORITES = (
-                df.product_name.str.contains("PILSNER U") & df.product_name.str.contains("PB|4X") |  # obuhvaća staklenu bocu i 4xlimenke
+                df.product_name.str.contains("PILSNER URQ") & df.product_name.str.contains("PB|4X") |  # obuhvaća staklenu bocu i 4xlimenke
                 df.product_name.str.contains("GARDEN") & df.product_name.str.contains("%") |
                 df.product_name.str.contains("ARBORIO|CARNAROLI|ORIGINARIO") & df.brand.str.contains("Riso Scotti") |
                 df.product_name.str.contains("TOFU") |
@@ -223,7 +223,9 @@ def FILT_FAVORITES(df):
                 df.product_name.str.contains("TORTILL") & df.brand.str.contains("Fiesta") |
                 df.product_name.str.contains("PANETTONE") & (df.quantity >= 0.5) |
                 df.product_name.str.contains("ELEPHANT SLANO PECIVO SEZAM") & (df.quantity > .15) |
-                df.product_name.str.contains("ELEPHANT KREKERI TWIST KARAMEL") & (df.quantity > .15)
+                df.product_name.str.contains("ELEPHANT KREKERI TWIST KARAMEL") & (df.quantity > .15) |
+                df.product_name.str.contains("CIRIO|MUTTI") & df.product_name.str.contains("PASIRANA|PELATI") & (df.quantity > 0.391) |
+                df.product_name.str.contains("KBIO.RAJČICE")
                 )
         return FILT_FAVORITES
 
@@ -311,9 +313,8 @@ if __name__ == "__main__":
     url_filtered = df_url[(df_url["date"] == TODAY) & (df_url["store_id"] == KF_ZD.id)].url.squeeze()
     df_in = read_csv_kf(url_filtered)
     df_in = df_in.rename(columns=PRICE_MAP | FIELD_MAP)
-    df_in.columns
-    df_in.dtypes
     df = tidy(df_in)
+    
     dff = df[(FILT_WEIZEN(df) | FILT_FAVORITES(df) | FILT_SIR(df))]
     
     dff_favs_razlika = (dff
