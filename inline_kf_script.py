@@ -2,6 +2,7 @@ from pathlib import Path
 import requests
 import re
 import logging
+import warnings
 import numbers
 import pandas as pd
 from dataclasses import dataclass
@@ -63,8 +64,7 @@ def normalize_filename_txt_kf(x: str):
                     'Slavonski_Brod': 'Slavonski Brod',
                     'Velika_Gorica': 'Velika Gorica',
                     "Nova_Gradiska": "Nova Gradiska",
-                    "Zagreb_Blato": "Zagreb Blato",
-                   "SupermarketS": "Supermarket_S_"}
+                    "Zagreb_Blato": "Zagreb Blato"}
     
     x = x.removesuffix(".csv").strip()
     
@@ -88,7 +88,9 @@ def filename_structure_match_kf(parts: list) -> dict:
                 "time": time
             }
         case _:
-            raise ValueError(f"Invalid component structure: {parts}")
+            warnings.warn(f"Invalid component structure: {parts}")
+            # raise ValueError(f"Invalid component structure: {parts}")
+            return {}
 
 def fetch_stores_dates():
     url = f"https://www.kaufland.hr/akcije-novosti/popis-mpc.assetSearch.id=assetList_{dynamic_number}.json"
