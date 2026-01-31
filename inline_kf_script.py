@@ -64,7 +64,7 @@ def normalize_filename_txt_kf(x: str):
                     'Velika_Gorica': 'Velika Gorica',
                     "Nova_Gradiska": "Nova Gradiska",
                     "Zagreb_Blato": "Zagreb Blato",
-                   "SupermarketS": "Supermarket_S"}
+                   "SupermarketS": "Supermarket_S_"}
     
     x = x.removesuffix(".csv").strip()
     
