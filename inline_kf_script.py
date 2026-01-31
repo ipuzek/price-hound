@@ -7,6 +7,8 @@ import numbers
 import pandas as pd
 from dataclasses import dataclass
 
+GITHUB_WARNING = "::warning::"
+
 @dataclass(frozen=True)
 class KauflandStore:
     id: int
@@ -88,7 +90,7 @@ def filename_structure_match_kf(parts: list) -> dict:
                 "time": time
             }
         case _:
-            warnings.warn(f"Invalid component structure: {parts}")
+            warnings.warn(f"{GITHUB_WARNING}Invalid component structure: {parts}")
             # raise ValueError(f"Invalid component structure: {parts}")
             return {}
 
