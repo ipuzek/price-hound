@@ -2,12 +2,9 @@ from pathlib import Path
 import requests
 import re
 import logging
-import warnings
 import numbers
 import pandas as pd
 from dataclasses import dataclass
-
-GITHUB_WARNING = "::warning::"
 
 @dataclass(frozen=True)
 class KauflandStore:
@@ -15,6 +12,8 @@ class KauflandStore:
     adresa: str
 
 BASE_URL = 'https://www.kaufland.hr/akcije-novosti/popis-mpc.html'
+
+GITHUB_WARNING = "::warning::"
 
 PRICE_MAP = {
         # old name: new name
@@ -90,7 +89,8 @@ def filename_structure_match_kf(parts: list) -> dict:
                 "time": time
             }
         case _:
-            warnings.warn(f"{GITHUB_WARNING}Invalid component structure: {parts}")
+            print(f"{GITHUB_WARNING}Invalid component structure: {parts}")
+            # warnings.warn(f"Invalid component structure: {parts}")
             # raise ValueError(f"Invalid component structure: {parts}")
             return {}
 
