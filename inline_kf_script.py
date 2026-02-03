@@ -1,8 +1,10 @@
 from pathlib import Path
-import requests
+import os
 import re
+import warnings
 import logging
 import numbers
+import requests
 import pandas as pd
 from dataclasses import dataclass
 
@@ -89,7 +91,13 @@ def filename_structure_match_kf(parts: list) -> dict:
                 "time": time
             }
         case _:
-            print(f"{GITHUB_WARNING}Invalid component structure: {parts}")
+            
+            msg = f"Invalid component structure: {parts}"
+            
+            if os.getenv("GITHUB_ACTIONS") == "true":
+                print(f"{GITHUB_WARNING}{msg}")
+            else:
+                warnings.warn(msg, stacklevel=2)
             # warnings.warn(f"Invalid component structure: {parts}")
             # raise ValueError(f"Invalid component structure: {parts}")
             return {}
@@ -338,4 +346,5 @@ if __name__ == "__main__":
             lambda row: highlight_rows_by_value(row, highlight_color="LightBlue"),
             axis=1)
 
+    Path("output").mkdir(exist_ok=True)
     styled.to_html(Path("output", "index.html"))
