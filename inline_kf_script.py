@@ -92,7 +92,7 @@ def filename_structure_match_kf(parts: list) -> dict:
             }
         case _:
             
-            msg = f"Invalid component structure: {parts}"
+            msg = f"Malformed store file structure: {parts}"
             
             if os.getenv("GITHUB_ACTIONS") == "true":
                 print(f"{GITHUB_WARNING}{msg}")
@@ -314,6 +314,8 @@ def highlight_rows_by_value(row, target_value=1, target_column="is_akcija", high
     else:
         return ["" for _ in row]
 
+def one_row_df_to_series(df):
+    return df.squeeze(axis=0)
 
 if __name__ == "__main__":
     TODAY = pd.Timestamp.today().normalize()
