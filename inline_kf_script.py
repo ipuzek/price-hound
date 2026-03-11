@@ -5,6 +5,7 @@ import warnings
 import logging
 import numbers
 import requests
+from urllib.parse import quote, urljoin
 import pandas as pd
 from dataclasses import dataclass
 
@@ -114,9 +115,14 @@ def fetch_stores_dates():
     normalized_filenames =[normalize_filename_txt_kf(name) for name in filenames]
 
     metadata = pd.DataFrame([filename_structure_match_kf(nf) for nf in normalized_filenames])
+    
+    metadata.date = metadata.date.str.strip()
+    metadata["path"] = [item["path"] for item in csv_links]
+    
+    # safe quote of empty spaces in URL:
+    metadata["url"] = "https://www.kaufland.hr" + metadata["path"].map(lambda p: quote(str(p), safe="/"))
 
     df_url = metadata.assign(
-        url=[("https://www.kaufland.hr" + item["path"]) for item in csv_links],
         date=pd.to_datetime(metadata["date"], format="%d%m%Y"),
         store_id=pd.to_numeric(metadata["store_id"]).astype("Int16")
     )
