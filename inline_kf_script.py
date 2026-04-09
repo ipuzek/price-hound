@@ -241,7 +241,8 @@ def FILT_FAVORITES(df):
                 df.product_name.str.contains("ELEPHANT SLANO PECIVO SEZAM") & (df.quantity > .15) |
                 df.product_name.str.contains("ELEPHANT KREKERI TWIST KARAMEL") & (df.quantity > .15) |
                 df.product_name.str.contains("CIRIO|MUTTI") & df.product_name.str.contains("PASIRANA|PELATI") & (df.quantity > 0.391) |
-                df.product_name.str.contains("KBIO.RAJČICE")
+                df.product_name.str.contains("KBIO.RAJČICE") |
+                df.product_name.str.contains("JOGURT") & df.product_name.str.contains("GRČKI") & (df.quantity > .25)
                 )
         return FILT_FAVORITES
 
@@ -254,7 +255,9 @@ def FILT_WEIZEN(df):
 
 def FILT_SIR(df):
         FILT_SIR = (
-                (df.product_name.str.contains("halloumi|parmi|pecorino|padano", case=False)) & (df.quantity >= .2))
+            df.product_name.str.contains("halloumi|parmi|pecorino|padano", case=False) & (df.quantity >= .2) |
+                df.product_name.str.contains("CAMEMB") & df.brand.str.contains("K-")
+                )
         return FILT_SIR
 
 def style_dataframe(df: pd.DataFrame,
@@ -334,6 +337,8 @@ if __name__ == "__main__":
     df = tidy(df_in)
     
     dff = df[(FILT_WEIZEN(df) | FILT_FAVORITES(df) | FILT_SIR(df))]
+    dff = df[FILT_FAVORITES(df)]
+    dff.to_csv("TMP.csv")
     
     dff_favs_razlika = (dff
     .astype({col: 'float64' for col in dff.filter(like='price').columns})
