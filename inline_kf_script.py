@@ -187,10 +187,12 @@ def tidy(df):
                 format="mixed", dayfirst=True, errors="coerce")
 
         df["anchor_price"] = pd.to_numeric(
-                df["price_to_parse"]
-                .str.removesuffix("€")
-                .str.removesuffix("€ur")
-                .map(replace_with_dot_if_number))
+            df["price_to_parse"]
+            .str.partition("€")[0]
+            .str.strip()
+            .map(replace_with_dot_if_number),
+            errors="coerce",
+        )
         
         # df["best_price_30"] = pd.to_numeric(
         #         df["best_price_30"]
