@@ -340,7 +340,6 @@ if __name__ == "__main__":
     
     dff = df[(FILT_WEIZEN(df) | FILT_FAVORITES(df) | FILT_SIR(df))]
     dff = df[FILT_FAVORITES(df)]
-    dff.to_csv("TMP.csv")
     
     dff_favs_razlika = (dff
     .astype({col: 'float64' for col in dff.filter(like='price').columns})
