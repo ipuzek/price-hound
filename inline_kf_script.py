@@ -7,6 +7,7 @@ import numbers
 import requests
 from urllib.parse import quote, urljoin
 import pandas as pd
+from more_itertools import one
 from dataclasses import dataclass
 
 @dataclass(frozen=True)
@@ -128,6 +129,20 @@ def fetch_stores_dates():
     )
     
     return df_url
+
+
+def get_single_kf_url(df_url: pd.DataFrame, *, date, store_id: int) -> str:
+    mask = (
+        (df_url["date"] == pd.Timestamp(date)) &
+        (df_url["store_id"] == store_id)
+    )
+
+    url = one(df_url.loc[mask, "url"])
+
+    if not isinstance(url, str):
+        raise TypeError(f"Expected URL string, got {type(url).__name__}: {url!r}")
+
+    return url
 
 def read_csv_kf(filename):
     """
@@ -333,7 +348,12 @@ if __name__ == "__main__":
     KF_ZD = KauflandStore(2030, "Andrije Hebranga 2")
     dynamic_number = find_assetlist_url_static(BASE_URL)
     df_url = fetch_stores_dates()
-    url_filtered = df_url[(df_url["date"] == TODAY) & (df_url["store_id"] == KF_ZD.id)].url.squeeze()
+    
+    url_filtered = get_single_kf_url(
+    df_url,
+    date=TODAY,
+    store_id=KF_ZD.id,)
+    
     df_in = read_csv_kf(url_filtered)
     df_in = df_in.rename(columns=PRICE_MAP | FIELD_MAP)
     df = tidy(df_in)
