@@ -189,41 +189,41 @@ def prepare_anchor(s: str):
 
 def tidy(df):
         
-        df["best_price_30"] = (
-            df["best_price_30"]
-            .str.replace(r"[^\d\.\,\-]", "", regex=True) # sanitize numbers, allow comma and dot
-            .pipe(pd.to_numeric, errors="coerce")
-        )
+    df["best_price_30"] = (
+        df["best_price_30"]
+        .str.replace(r"[^\d\.\,\-]", "", regex=True) # sanitize numbers, allow comma and dot
+        .pipe(pd.to_numeric, errors="coerce")
+    )
 
-        df[["date_to_parse", "price_to_parse"]] = df.anchor_price_date.apply(prepare_anchor)
+    df[["date_to_parse", "price_to_parse"]] = df.anchor_price_date.apply(prepare_anchor)
 
-        df["anchor_date"] = pd.to_datetime(
-                df["date_to_parse"].str.removeprefix("MPC").str.strip(),
-                format="mixed", dayfirst=True, errors="coerce")
+    df["anchor_date"] = pd.to_datetime(
+            df["date_to_parse"].str.removeprefix("MPC").str.strip(),
+            format="mixed", dayfirst=True, errors="coerce")
 
-        df["anchor_price"] = pd.to_numeric(
-            df["price_to_parse"]
-            .str.partition("€")[0]
-            .str.strip()
-            .map(replace_with_dot_if_number),
-            errors="coerce",
-        )
-        
-        # df["best_price_30"] = pd.to_numeric(
-        #         df["best_price_30"]
-        #         # .str.removeprefix("*")
-        #         .map(replace_with_dot_if_number))
+    df["anchor_price"] = pd.to_numeric(
+        df["price_to_parse"]
+        .str.partition("€")[0]
+        .str.strip()
+        .map(replace_with_dot_if_number),
+        errors="coerce",
+    )
+    
+    # df["best_price_30"] = pd.to_numeric(
+    #         df["best_price_30"]
+    #         # .str.removeprefix("*")
+    #         .map(replace_with_dot_if_number))
 
-        df = df.assign(
-                product_name = df["product_name"].str.upper(),
-                quantity = pd.to_numeric(df["quantity"]),
-                kol_jed_mj = pd.to_numeric(df["kol_jed_mj"], downcast="integer"),
-                price_anchor_diff = (df["price"] - df["anchor_price"]) / df["anchor_price"],
-                is_akcija = pd.to_numeric(df["is_akcija"].replace("A", "1").fillna("0"), downcast="integer"))
-                
-        return (df
-        .convert_dtypes()
-        .drop(columns=["anchor_price_date", "date_to_parse", "price_to_parse"]))
+    df = df.assign(
+            product_name = df["product_name"].str.upper(),
+            quantity = pd.to_numeric(df["quantity"]),
+            kol_jed_mj = pd.to_numeric(df["kol_jed_mj"], downcast="integer"),
+            price_anchor_diff = (df["price"] - df["anchor_price"]) / df["anchor_price"],
+            is_akcija = pd.to_numeric(df["is_akcija"].replace("A", "1").fillna("0"), downcast="integer"))
+            
+    return (df
+    .convert_dtypes()
+    .drop(columns=["anchor_price_date", "date_to_parse", "price_to_parse"]))
 
 def FILT_FAVORITES(df):
         FILT_FAVORITES = (
@@ -277,17 +277,26 @@ def FILT_SIR(df):
                 )
         return FILT_SIR
 
-def style_dataframe(df: pd.DataFrame,
-                    caption=f"UPDATED: {pd.Timestamp.now().strftime("%d.%m.%Y %H:%M")}",
-                    header_color="indigo",  #  header_color="#4CAF50",
-                    numeric_format=None, hide_index=True):
+def style_dataframe(
+    df: pd.DataFrame,
+    caption=None,
+    header_color="indigo",
+    numeric_format=None,
+    hide_index=True,
+    ):
+
     """
     Style a DataFrame for HTML output without modifying the original.
     Features:
+        - CAPTION: default timestamp on creation
         - Thin horizontal lines between rows
         - Header color
         - Numeric formatting
     """
+    
+    if caption is None:
+        caption = f"UPDATED: {pd.Timestamp.now(tz='Europe/Zagreb').strftime('%d.%m.%Y %H:%M')}"
+
 
     # Basic table style: header + centered cells + borders
 
